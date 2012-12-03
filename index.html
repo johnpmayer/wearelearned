@@ -1,0 +1,119 @@
+<!doctype html>
+<html ng-app="app">
+  <head>
+    <title>We Are Learned</title>
+    <!-- Bootstrap Assets -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="underscore-min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <!-- Parse JS Library -->
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.1.8.min.js"></script>
+    <!-- AngularJS Library -->
+    <script type="text/javascript" src="angular.min.js"></script>
+    <!-- parseauth component library -->
+    <script type="text/javascript" src="parseauth/parseauth.js"></script>
+    <!-- Internal assets -->
+    <script type="text/javascript" src="app.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <parseauth debug="true"
+               appid="iJKG8C13U9DY9xoXmLh58gXcBfXtw5dsbj17OapO"
+               jskey="1xFKCwSQ4fdV9Tmra8q22R6k4PXrW7IK1UBFsrDG">
+
+      <div class="container-fluid"
+           ng-controller="Main">
+
+        <!-- Page Header -->
+        <div class="page-header">
+
+          <!-- Title -->
+          <div class="row-fluid">
+            <div class="span12">
+              <h1 class="textcenter">
+                WeAreLearned
+                <small>Concepts in Context</small>
+              </h1>
+            </div>
+          </div>
+
+          <!-- Navbar -->
+          <div class="navbar">
+            <div class="navbar-inner">
+              <ul class="nav">
+                <li>
+                  <a href="#">
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Planner
+                  </a>
+                </li>
+              </ul>
+              <form class="navbar-form pull-right"
+                    ng-submit="search()">
+                <input type="text"
+                       ng-model="searchString"
+                       class="input-medium search-query"
+                       placeholder="Find a concept">
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row-fluid">
+
+          <!-- Left Panel: Dependencies -->
+          <div class="span3">
+            <h3>Depends on:</h3>
+            <div class="well">
+              <optiontitle ng-repeat="concept in dependencies"
+                           ng-controller="Dependency"
+                           title="concept"
+                           options="menuOptions"></optiontitle>
+            </div>
+          </div>
+
+          <!-- Center Panel: Concept -->
+          <div class="span6">
+
+            <!-- Concept title bar-->
+            <optiontitle ng-controller="ConceptTitle"
+                         title="conceptName"
+                         options="menuOptions"></optiontitle>
+
+            <!-- Concept Explanations -->
+            <div class="well"
+                 ng-controller="Explanation"
+                 ng-repeat="explanation in explanations">
+              <optiontitle title="authorString"
+                           options="menuOptions"></optiontitle>
+              <p>
+                {{ explanation.text }}
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Right Panel: Dependents -->
+          <div class="span3">
+            <h3>Depended on by:</h3>
+
+            <div class="well">
+              <optiontitle ng-repeat="concept in dependents"
+                           ng-controller="Dependency"
+                           title="concept"
+                           options="menuOptions"></optiontitle>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </parseauth>
+  </body>
+</html>
