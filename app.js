@@ -1,80 +1,139 @@
-angular.module('app', ['parseauth'])
-    .directive('optiontitle', function() {
-        return {
-            restrict: 'E',
-            transclude: false,
-            scope: true,
-            controller: function($scope, $attrs) {
-                $scope.title = $scope[$attrs.title];
-                $scope.options = $scope[$attrs.options];;
-            },
-            templateUrl: 'templates/optiontitle.html'
-        };
-    });
-
-var Concept = Parse.Object.extend("Concept");
-
-function Main($scope) {
-
-    $scope.search = function(){
-        alert($scope.searchString);
-        var searchQuery = new Parse.Query(Concept);
-        searchQuery.contains("name", $scope.searchString);
-        searchQuery.find({
-            success: function(concepts) {
-                console.log(_.map(concepts,function(concept){
-                    return concept.get("name");
-                }));
-            }
-        })
-    }
-
-    // Fake Data:
-
-    $scope.conceptName = "Hydrogen bonds";
-
-    var lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-
-    $scope.dependencies = ["Electrostatic forces", "Electron geometry"];
-    $scope.dependents = ["Freezing point of water", "DNA"];
-
-    $scope.explanations = [
-
-        {
-            author: 'John',
-            votes: 100,
-            text: lorem
-        },
-
-        {
-            author: 'Mary',
-            votes: 150,
-            text: lorem
-        },
-
-    ];
-
-}
-
 function todo() {
-    alert('ToDo');
+  alert('ToDo');
 }
 
-function Dependency($scope) {
+angular.module('app',[])
 
-    $scope.menuOptions = [{name:'Explore',callback:todo}];
+.service('Mode', function() {
+  var that = this;
+  this.mode = 'concept',
+  this.setMode = function(mode) {
+    that.mode = mode;
+  }
+})
 
-}
+.directive('optiontitle', function() {
+  return {
+    restrict: 'E',
+    transclude: false,
+    scope: true,
+    controller: function($scope, $attrs) {
+      $scope.title = $scope[$attrs.title];
+      $scope.options = $scope[$attrs.options];;
+    },
+    templateUrl: 'templates/optiontitle.html'
+  };
+})
 
-function ConceptTitle($scope) {
+.controller("Main", function($scope) {
 
-    $scope.menuOptions = [{name:'Contribute',callback:todo}];
+  $scope.search = function(){
+    alert($scope.searchString);
+  }
 
-}
+  // Fake Data:
 
-function Explanation($scope) {
+  $scope.conceptName = "Hydrogen bonds";
 
-    $scope.authorString = "Written by: " + $scope.explanation.author;
-    $scope.menuOptions = [{name:'Comment', callback:todo}];
+  $scope.dependencies = ["Electrostatic forces", "Electron geometry", "A topic with an extremely long name"];
+  $scope.dependants = ["Freezing point of water", "DNA"];
 
-}
+  $scope.explanations = [
+
+    {
+      author: 'Mary',
+      votes: 130,
+      text: "fo sfjhbs khb zc afgfjhgs jydg ckjyzgx jhvb kajsfg kasjfbg kasjgsadfhbg iasdhf laiuhv liae7fy8 hk,jebf la89sf yqkjb ,kjfbsf 9asgf fb o dub dsal ju dsfads fyf jyd hjafkhjd fjhgf kasdgkdjh gasdk casd kj bar baz"
+    },
+
+    {
+      author: 'John',
+      votes: 70,
+      text: "foo bar baz asduyf gakhfvkasdh gsdhgc ksahc sdhcsahg kashgsakdhkasg asdkhfgaksdjhg dsfh sdkfjhg sadfkjhg asdfkjh sadhjg askdfhg sdfh sdkjfh asdkflieufbas,jfg owiefb asdjkhg asdilug s,mncbs,djchb sjfbasdmfb ;lsaufdfg .asukdfsbf. sdf usdyvf"
+    },
+
+  ];
+
+})
+
+.controller("LeftSize", function($scope, Mode) {
+  $scope.Mode = Mode;
+
+  var updateLayout = function(mode) {
+    $scope.status = (mode == 'dependencies')
+      ? "open" : "closed";
+    $scope.layout = ($scope.status == "open") 
+      ? "span3" 
+      : "span1";
+  }
+
+  $scope.close = function(){ 
+    Mode.setMode('concept');
+  }
+
+  $scope.open = function(){ 
+    Mode.setMode('dependencies');
+  }
+
+  $scope.$watch("Mode.mode", function(newVal, oldVal) {
+    updateLayout(newVal);
+  }, true);
+})
+
+.controller("RightSize", function($scope, Mode) {
+  $scope.Mode = Mode;
+
+  var updateLayout = function(mode) {
+    $scope.status = (mode == 'dependants')
+      ? "open" : "closed";
+    $scope.layout = ($scope.status == "open") 
+      ? "span3" 
+      : "span1";
+  }
+
+  $scope.close = function(){ 
+    Mode.setMode('concept');
+  }
+
+  $scope.open = function(){ 
+    Mode.setMode('dependants');
+  }
+
+  $scope.$watch("Mode.mode", function(newVal, oldVal) {
+    updateLayout(newVal);
+  }, true);
+})
+
+.controller("MiddleSize", function($scope, Mode) {
+  $scope.Mode = Mode;
+  var updateLayout = function(mode) {
+    $scope.status = (mode == 'concept')
+      ? "full" : "sidebar";
+    $scope.layout = ($scope.status == "full") 
+      ? "span10" 
+      : "span8";
+  }
+  $scope.$watch("Mode.mode", function(newVal, oldVal) {
+    updateLayout(newVal);
+  }, true);
+})
+
+.controller("Dependency", function($scope) {
+  $scope.menuOptions = [{name:'Explore',callback:todo}];
+})
+
+.controller("Dependant", function($scope) {
+  $scope.menuOptions = [{name:'Explore',callback:todo}];
+})
+
+.controller("ConceptTitle", function($scope) {
+
+  $scope.menuOptions = [{name:'Contribute',callback:todo}];
+
+})
+
+.controller("Explanation", function($scope) {
+
+  $scope.menuOptions = [{name:'Comment', callback:todo}];
+
+})

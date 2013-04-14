@@ -1,17 +1,12 @@
-<div style="margin-bottom:10px">
-  <h5 class="inline">{{ title }}</h5>
-  <span class="btn-group pull-right">
-    <a class="btn btn-small btn-link dropdown-toggle"
-       data-toggle="dropdown"
-       href="#">
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <li ng-repeat="option in options">
-        <a href="#" ng-click="option.callback()">
-          {{ option.name }}
-        </a>
-      </li>
-    </ul>
-  </span>
+<div class="btn-group">
+  <button class="btn btn-large dropdown-toggle"
+          style="width:100%; white-space: normal;"
+          data-toggle="dropdown">
+    {{title}}
+  </button>
+  <ul class="dropdown-menu">
+    <li ng-repeat="option in options">
+      <a href="#" ng-click="option.callback()">{{ option.name }}</a>
+    </li>
+  </ul>
 </div>
