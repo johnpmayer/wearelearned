@@ -1,0 +1,18 @@
+<!-- New document modal -->
+<div class="modal-header">
+  <h3>{{ modal.title }}</h3>
+  <input 
+    type="text"
+    ng-model="modal.import"
+    bs-typeahead="conceptSearch">
+  </input>
+</div>
+<div class="modal-body">
+  <textarea 
+    rows="5">
+    {{ newDocument.text }}
+  </textarea>
+</div>
+<div class="modal-footer">
+  <button>Submit</button>
+</div>

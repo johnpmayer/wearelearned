@@ -2,7 +2,7 @@ function todo() {
   alert('ToDo');
 }
 
-angular.module('app',[])
+angular.module('app',['$strap.directives'])
 
 .service('Mode', function() {
   var that = this;
@@ -135,5 +135,24 @@ angular.module('app',[])
 .controller("Explanation", function($scope) {
 
   $scope.menuOptions = [{name:'Comment', callback:todo}];
+
+})
+
+.controller("DocumentMgr", function($scope) {
+  
+  $scope.modal = {
+    "title":"Create a new Document",
+    "import":"",
+    "saved":true,
+  }
+
+  $scope.conceptSearch = function(query, callback) {
+    callback(["a","b","c"]);
+  }
+  
+  $scope.newDocument = {
+    "text" : "",
+    "dependencies" : [],
+  }
 
 })
