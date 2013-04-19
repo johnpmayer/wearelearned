@@ -16,8 +16,8 @@
   <body>
 
     <div class="container-fluid"
-         ng-controller="Main">
-      
+      ng-controller="Main">
+
       <!-- Page Header -->
       <div class="page-header">
 
@@ -26,107 +26,107 @@
           <div class="navbar-inner">
             <ul class="nav">
               <li>
-                <a href="#">Profile</a>
+              <a href="#">Profile</a>
               </li>
               <li>
-                <a href="#">Planner</a>
+              <a href="#">Planner</a>
               </li>
             </ul>
             <form class="navbar-form pull-right"
-                  ng-submit="search()">
+              ng-submit="search()">
               <input type="text"
-                     ng-model="searchString"
-                     class="input-medium search-query"
-                     placeholder="Find a concept">
+              ng-model="searchString"
+              class="input-medium search-query"
+              placeholder="Find a concept">
             </form>
           </div>
         </div>
-      
+
       </div>
-      
+
       <!-- Concept Header -->
       <div class="row-fluid">
         <!-- Concept title bar-->
         <h2>{{ conceptName }}</h2>
       </div>
-      
+
       <!-- Panels -->
       <div class="row-fluid">
-        
+
         <!-- Left Panel: Dependencies -->
         <div ng-controller="LeftSize" 
-             ng-class="layout">
+          ng-class="layout">
           <div ng-hide="status != 'closed'">
             <button class="btn"
-                    ng-click="open()">
+              ng-click="open()">
               <i class="icon-arrow-right"></i>
             </button>
           </div>
           <div ng-hide="status != 'open'">
             <button class="btn pull-left"
-                    ng-click="close()">
+              ng-click="close()">
               <i class="icon-arrow-left"></i>
             </button>
             <div class="well well-small">
-              <h3 class="text-center">Dependencies</h3>
+              <h3>Dependencies</h3>
               <optiontitle ng-repeat="dependency in dependencies"
-                           ng-controller="Dependency"
-                           title="dependency"
-                           options="menuOptions"></optiontitle>
+              ng-controller="Dependency"
+              title="dependency"
+              options="menuOptions"></optiontitle>
             </div>
           </div>
         </div>
 
         <!-- Center Panel: Concept -->
         <div ng-controller="MiddleSize" 
-             ng-class="layout">
+          ng-class="layout">
           <!-- Document controls -->
           <div style="padding-bottom:5px;"
-               ng-controller="DocumentMgr" >
+            ng-controller="DocumentMgr" >
             <button class="btn"
-                    type="button"
-                    data-toggle="tooltip"
-                    title="Create a new document"
-                    bs-modal="'templates/newDocument.html'">
+              type="button"
+              data-toggle="tooltip"
+              title="Create a new document"
+              bs-modal="'templates/newDocument.html'">
               <i class="icon-plus-sign"></i>
             </button>
           </div>
           <!-- Concept Explanations -->
           <div class="well"
-               ng-controller="Explanation"
-               ng-repeat="explanation in explanations">
+            ng-controller="Explanation"
+            ng-repeat="explanation in explanations">
             <h4>{{ explanation.author }} said:</h4>
             <p>
-              {{ explanation.text }}
+            {{ explanation.text }}
             </p>
           </div>
         </div>
-        
+
         <!-- Right Panel: Dependents -->
         <div ng-controller="RightSize" 
-             ng-class="layout">
+          ng-class="layout">
           <div ng-hide="status != 'closed'">
-            <button class="btn"
-                    ng-click="open()">
+            <button class="btn pull-right"
+              ng-click="open()">
               <i class="icon-arrow-left"></i>
             </button>
           </div>
           <div ng-hide="status != 'open'">
             <button class="btn pull-right"
-                    ng-click="close()">
+              ng-click="close()">
               <i class="icon-arrow-right"></i>
             </button>
             <div class="well well-small">
-              <h3 class="text-center">Dependants</h3>
+              <h3>Dependants</h3>
               <optiontitle ng-repeat="dependant in dependants"
-                           ng-controller="Dependant"
-                           title="dependant"
-                           options="menuOptions"></optiontitle>
+              ng-controller="Dependant"
+              title="dependant"
+              options="menuOptions"></optiontitle>
             </div>
           </div>
         </div>
 
       </div>
     </div>
-  </body
+  </body>
 </html>
