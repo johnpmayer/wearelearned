@@ -1,0 +1,55 @@
+<html data-ng-app="wearelearned">
+    <head>
+        <title>We Are Learned - Topic Graph</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+        <script src="http://underscorejs.org/underscore-min.js"></script>
+        <!-- https://github.com/anvaka/VivaGraphJS -->
+        <script src="vivagraph.min.js"></script>
+    </head>
+    <body>
+        <h1>Topic Graph</h1>
+        <div data-ng-controller="TopicGraph"></div>
+        <script>
+var wearelearned = angular.module('wearelearned', []);
+
+wearelearned.controller('TopicGraph', function ($scope, $http) {
+
+    var getTopics = function() {
+        $http.get('/topics').then(function(res) {
+            getRelations(res.data);
+        });
+    };
+
+    var getRelations = function(topics) {
+        $http.get('/relations').then(function(res) {
+            var relations = res.data;
+            drawGraph(topics, relations);
+        });
+    };
+
+    var drawGraph = function(topics, relations) {
+        var graph = Viva.Graph.graph();
+        _.each(topics, function(topic) {
+            graph.addNode(topic[0], { label : topic[1] });
+        });
+        _.each(relations, function(relation) {
+            graph.addLink(relation[0], relation[1]);
+        });
+        var graphics = Viva.Graph.View.svgGraphics();
+        graphics.node(function(node) {
+            return Viva.Graph.svg('text').text(node.data.label);
+        }).placeNode(function(nodeUI, pos) {
+            nodeUI.attr('x', pos.x - 12).attr('y', pos.y - 12);
+        });
+        var renderer = Viva.Graph.View.renderer(graph, {
+            graphics: graphics
+        });
+        renderer.run();
+    };
+    
+    getTopics();
+
+});
+        </script>
+    </body>
+</html>
